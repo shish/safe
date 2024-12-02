@@ -15,10 +15,10 @@ class WritePhpFunction
      */
     public function getPhpPrototypeFunction(): string
     {
-        if ($this->method->getFunctionName()) {
+        if ($this->method->getFunctionName() !== '' && $this->method->getFunctionName() !== '0') {
             $returnType = $this->method->getSignatureReturnType();
-            $returnType = $returnType ? ': '.$returnType : '';
-            return 'function '.$this->method->getFunctionName().'('.$this->displayParamsWithType($this->method->getParams()).')'.$returnType.'{}';
+            $returnType = $returnType !== '' && $returnType !== '0' ? ': ' . $returnType : '';
+            return 'function ' . $this->method->getFunctionName() . '(' . $this->displayParamsWithType($this->method->getParams()) . ')' . $returnType . '{}';
         }
         return '';
     }
@@ -28,7 +28,7 @@ class WritePhpFunction
      */
     public function getPhpFunctionalFunction(): string
     {
-        if ($this->getPhpPrototypeFunction()) {
+        if ($this->getPhpPrototypeFunction() !== '' && $this->getPhpPrototypeFunction() !== '0') {
             return $this->writePhpFunction();
         }
         return '';
@@ -41,7 +41,8 @@ class WritePhpFunction
     {
         $phpFunction = $this->method->getPhpDoc();
         $returnType = $this->method->getSignatureReturnType();
-        $returnType = $returnType ? ': '.$returnType : '';
+        $returnType = $returnType !== '' && $returnType !== '0' ? ': ' . $returnType : '';
+
         $returnStatement = '';
         if ($this->method->getSignatureReturnType() !== 'void') {
             $returnStatement = "    return \$safeResult;\n";
