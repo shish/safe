@@ -33,7 +33,7 @@ use Safe\Exceptions\ImageException;
  *
  * Index 0 and 1 contains respectively the width and the height of the image.
  *
- * Index 2 is one of the IMAGETYPE_XXX constants indicating
+ * Index 2 is one of the IMAGETYPE_* constants indicating
  * the type of the image.
  *
  * Index 3 is a text string with the correct
@@ -78,10 +78,10 @@ function getimagesize(string $filename, ?array &$image_info = null): ?array
 
 
 /**
- * Returns the extension for the given IMAGETYPE_XXX
+ * Returns the extension for the given IMAGETYPE_*
  * constant.
  *
- * @param int $image_type One of the IMAGETYPE_XXX constant.
+ * @param int $image_type One of the IMAGETYPE_* constant.
  * @param bool $include_dot Whether to prepend a dot to the extension or not. Default to TRUE.
  * @return string A string with the extension corresponding to the given image type.
  * @throws ImageException
@@ -725,17 +725,18 @@ function imagecreate(int $width, int $height)
  * representing the image obtained from the given filename.
  *
  * @param string $filename Path to the AVIF raster image.
- * @return  Returns an image object on success, FALSE on errors.
+ * @return \GdImage Returns an image object on success, FALSE on errors.
  * @throws ImageException
  *
  */
-function imagecreatefromavif(string $filename): void
+function imagecreatefromavif(string $filename): \GdImage
 {
     error_clear_last();
     $safeResult = \imagecreatefromavif($filename);
     if ($safeResult === false) {
         throw ImageException::createFromPhpError();
     }
+    return $safeResult;
 }
 
 
@@ -909,17 +910,18 @@ function imagecreatefromstring(string $data)
  * representing the image obtained from the given filename.
  *
  * @param string $filename Path to the Truevision TGA image.
- * @return  Returns an image object on success, FALSE on errors.
+ * @return \GdImage Returns an image object on success, FALSE on errors.
  * @throws ImageException
  *
  */
-function imagecreatefromtga(string $filename): void
+function imagecreatefromtga(string $filename): \GdImage
 {
     error_clear_last();
     $safeResult = \imagecreatefromtga($filename);
     if ($safeResult === false) {
         throw ImageException::createFromPhpError();
     }
+    return $safeResult;
 }
 
 
@@ -1795,7 +1797,7 @@ function imagegif($image, $file = null): void
 /**
  * Grabs a screenshot of the whole screen.
  *
- * @return resource Returns an image object on success, FALSE on failure.
+ * @return resource Returns an image object on success.
  * @throws ImageException
  *
  */
@@ -1815,7 +1817,7 @@ function imagegrabscreen()
  *
  * @param int $handle The HWND window ID.
  * @param bool $client_area Include the client area of the application window.
- * @return \GdImage Returns an image object on success, FALSE on failure.
+ * @return \GdImage Returns an image object on success.
  * @throws ImageException
  *
  */
@@ -2028,7 +2030,7 @@ function imageloadfont(string $filename): int
  * The default (-1) uses the zlib compression default.
  * For more information see the zlib manual.
  * @param int $filters Allows reducing the PNG file size. It is a bitmask field which may be
- * set to any combination of the PNG_FILTER_XXX
+ * set to any combination of the PNG_FILTER_*
  * constants. PNG_NO_FILTER or
  * PNG_ALL_FILTERS may also be used to respectively
  * disable or activate all filters.

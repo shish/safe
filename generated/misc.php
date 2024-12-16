@@ -54,7 +54,7 @@ function define(string $constant_name, $value, bool $case_insensitive = false): 
  * highlighted code.
  * @return string|bool If return is set to TRUE, returns the highlighted
  * code as a string instead of printing it out. Otherwise, it will return
- * TRUE on success, FALSE on failure.
+ * TRUE on success.
  * @throws MiscException
  *
  */
@@ -62,29 +62,6 @@ function highlight_file(string $filename, bool $return = false)
 {
     error_clear_last();
     $safeResult = \highlight_file($filename, $return);
-    if ($safeResult === false) {
-        throw MiscException::createFromPhpError();
-    }
-    return $safeResult;
-}
-
-
-/**
- *
- *
- * @param string $string The PHP code to be highlighted. This should include the opening tag.
- * @param bool $return Set this parameter to TRUE to make this function return the
- * highlighted code.
- * @return string|bool If return is set to TRUE, returns the highlighted
- * code as a string instead of printing it out. Otherwise, it will return
- * TRUE on success, FALSE on failure.
- * @throws MiscException
- *
- */
-function highlight_string(string $string, bool $return = false)
-{
-    error_clear_last();
-    $safeResult = \highlight_string($string, $return);
     if ($safeResult === false) {
         throw MiscException::createFromPhpError();
     }
@@ -185,8 +162,18 @@ function sapi_windows_generate_ctrl_event(int $event, int $pid = 0): void
  * this is only possible when called from the main thread.
  *
  * @param  $handler A callback function to set or remove. If set, this function will be called
- * whenever a CTRL+C or CTRL+BREAK event
- * occurs. The function is supposed to have the following signature:
+ * whenever a
+ *
+ * CTRL
+ * C
+ *
+ * or
+ *
+ * CTRL
+ * BREAK
+ *
+ * event occurs.
+ * The function is supposed to have the following signature:
  *
  * voidhandler
  * intevent
@@ -204,7 +191,16 @@ function sapi_windows_generate_ctrl_event(int $event, int $pid = 0): void
  *
  *
  * Setting a NULL handler causes the process to ignore
- * CTRL+C events, but not CTRL+BREAK events.
+ *
+ * CTRL
+ * C
+ *
+ * events, but not
+ *
+ * CTRL
+ * BREAK
+ *
+ * events.
  * @param bool $add
  * @throws MiscException
  *
@@ -220,7 +216,7 @@ function sapi_windows_set_ctrl_handler($handler, bool $add = true): void
 
 
 /**
- * If enable is NULL, the function returns TRUE if the stream stream has VT100 control codes enabled, FALSE otherwise.
+ * If enable is NULL, the function returns TRUE if the stream stream has VT100 control codes enabled.
  *
  * If enable is a bool, the function will try to enable or disable the VT100 features of the stream stream.
  * If the feature has been successfully enabled (or disabled).
