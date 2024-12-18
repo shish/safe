@@ -108,8 +108,7 @@ function pg_connection_reset($connection): void
  * as many columns as values has elements. The
  * fieldnames in table_name must match the indices in
  * values and the corresponding datatypes must be
- * compatible. Returns an array with the converted values on success, FALSE
- * otherwise.
+ * compatible. Returns an array with the converted values on success.
  *
  * @param resource $connection An PgSql\Connection instance.
  * @param string $table_name Name of the table against which to convert types.
@@ -819,7 +818,7 @@ function pg_meta_data($connection, string $table_name, bool $extended = false): 
  * is_superuser, session_authorization,
  * DateStyle, TimeZone, and
  * integer_datetimes.  Note that this value is case-sensitive.
- * @return string A string containing the value of the parameter, FALSE on failure or invalid
+ * @return string A string containing the value of the parameter or invalid
  * param_name.
  * @throws PgsqlException
  *
@@ -1236,6 +1235,8 @@ function pg_result_seek($result, int $row): void
  * @param string $table_name Name of the table from which to select rows.
  * @param array $conditions An array whose keys are field names in the table table_name,
  * and whose values are the conditions that a row must meet to be retrieved.
+ * As of PHP 8.4.0, when an empty array is provided, no conditions will apply.
+ * Previously, the function failed with an empty conditions argument.
  * @param int $flags Any number of PGSQL_CONV_FORCE_NULL,
  * PGSQL_DML_NO_CONV,
  * PGSQL_DML_ESCAPE,
@@ -1256,7 +1257,7 @@ function pg_result_seek($result, int $row): void
  * @throws PgsqlException
  *
  */
-function pg_select($connection, string $table_name, array $conditions, int $flags = PGSQL_DML_EXEC, int $mode = PGSQL_ASSOC)
+function pg_select($connection, string $table_name, array $conditions = [], int $flags = PGSQL_DML_EXEC, int $mode = PGSQL_ASSOC)
 {
     error_clear_last();
     $safeResult = \pg_select($connection, $table_name, $conditions, $flags, $mode);

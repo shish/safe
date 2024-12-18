@@ -20,14 +20,13 @@ use Safe\Exceptions\StreamException;
  * @throws StreamException
  *
  */
-function stream_context_set_options($context, array $options): true
+function stream_context_set_options($context, array $options): void
 {
     error_clear_last();
     $safeResult = \stream_context_set_options($context, $options);
     if ($safeResult === false) {
         throw StreamException::createFromPhpError();
     }
-    return $safeResult;
 }
 
 
@@ -466,7 +465,7 @@ function stream_socket_accept($socket, ?float $timeout = null, ?string &$peer_na
  * be used together with the other file functions (such as
  * fgets, fgetss,
  * fwrite, fclose, and
- * feof), FALSE on failure.
+ * feof).
  * @throws StreamException
  *
  */
